@@ -13,7 +13,7 @@ try {
 	$redis = new Predis\Client();
 
     $bookmark_id = $redis->incr("next_bookmark_id");
-    $redis->zadd("bookmarks", $bookmark_id);
+    $redis->zadd("bookmarks", [$bookmark_id => $bookmark_id]);
 
     $bookmark_key = "bookmark:" . $bookmark_id;
 
@@ -27,14 +27,13 @@ try {
       $redis->sadd("tag:" . $actual_tag, [$bookmark_id]);
     }
 
-    
-
+    print_r($redis->zrange("bookmarks", -15, -1));
 	
 } catch(Exception $e){
 	print $e->getMessage();
 }
 
 
-header('Location: '.'/');
+header('Location: /');
 
 ?>
