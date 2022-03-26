@@ -3,7 +3,7 @@
     <h2>Add new bookmark</h2>
 
     
-    <form action="set.php">
+    <form action="bookit.php">
         <label for="url">URL: </label>
         <input type="text" name="url"><br>
         <label for="tags">Tags (list):</label>

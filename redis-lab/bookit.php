@@ -12,14 +12,19 @@ try {
 
 	$redis = new Predis\Client();
 
-    $redis->incr("next_bookmark_id");
-    $redis->zadd("bookmarks", $url);
+    $bookmark_id = $redis->incr("next_bookmark_id");
+    $redis->zadd("bookmarks", $bookmark_id);
+
+    $bookmark_key = "bookmark:" . $bookmark_id;
+
+    $redis->hset($bookmark_key, "url", $url);
 
     $actual_tags = explode(",", $tags);
 
     foreach ($actual_tags as $actual_tag)
     {
-      
+      $redis->sadd($bookmark_key . ":tags", [$actual_tag]);
+      $redis->sadd("tag:" . $actual_tag, [$bookmark_id]);
     }
 
     
